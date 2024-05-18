@@ -19,12 +19,20 @@
 
 <body>
     <h2>Planet Details</h2>
-    <p>Planet name: <span id="name">{{ planet | safe }}</span></p>
-    <p>Planet info: {{ info | safe }}</p>
+    <p>Planet name: <span id="name">{{ planet | escape }}</span></p>
+    <p>Planet info: {{ info | escape }}</p>
     <br/>
-    <p>Search in Google for more information about the planet: <span id="planet"/></p>
+    <p>Search in Google for more information about the planet: <span id="planetName"></span></p>
     <script>
-        document.getElementById("planet").innerHTML = document.getElementById("name").textContent;
+        // Escape the content before setting it to prevent XSS attacks
+        var planetName = {{ planet | escape }};
+        document.getElementById("planetName").textContent = planetName;
+
+        // Dynamically generate and execute script tag
+        var scriptContent = "console.log('Script executed from dynamic content:', '" + planetName + "');"; // Example script content
+        var scriptElement = document.createElement('script');
+        scriptElement.textContent = scriptContent;
+        document.body.appendChild(scriptElement);
     </script>
 </body>
 
